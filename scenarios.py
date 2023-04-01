@@ -34,6 +34,3 @@ def generate_scenario(name: str):
     generate_network1(name)
     generate_route1(name)
     generate_sumocfg(name)
-
-if __name__ == "__main__":
-    generate_scenario('test')

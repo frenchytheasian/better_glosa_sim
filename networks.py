@@ -32,6 +32,3 @@ def generate_network1(name: str):
     generate_nod1(name)
     generate_edg1(name)
     subprocess.run(['netconvert', '-n', f'data/{name}.nod.xml', '-e', f'data/{name}.edg.xml', '-o', f'data/{name}.net.xml'])
-
-if __name__ == "__main__":
-    generate_network1('test')
