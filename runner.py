@@ -32,6 +32,18 @@ def get_options():
         default=False,
         help="run the commandline version of sumo",
     )
+    optParser.add_option(
+        "--intersections",
+        action="store",
+        default=10,
+        help="set number of intersections"
+    )
+    optParser.add_option(
+        "--filename",
+        action="store",
+        default="test",
+        help="set filename"
+    )
     options, args = optParser.parse_args()
     return options
 
@@ -44,10 +56,10 @@ if __name__ == "__main__":
     else:
         sumoBinary = checkBinary("sumo-gui")
 
-    name = 'test'
+    name = options.filename
     generate_scenario(name)
     traci.start(
         [sumoBinary, "-n", f"data/{name}.net.xml", "-r", f"data/{name}.rou.xml", "--tripinfo-output", "tripinfo.xml"],
     )
     run()
-    
+    os.system(f"rm -rf data")
