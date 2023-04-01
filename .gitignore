@@ -164,4 +164,4 @@ cython_debug/
 
 # Sumo output
 *.out
-tripinfo.xml
+*.xml
