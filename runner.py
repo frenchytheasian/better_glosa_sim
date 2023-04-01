@@ -47,7 +47,7 @@ if __name__ == "__main__":
     name = 'test'
     generate_scenario(name)
     traci.start(
-        [sumoBinary, "-c", f"data/{name}.sumocfg", "--tripinfo-output", "tripinfo.xml"],
+        [sumoBinary, "-n", f"data/{name}.net.xml", "-r", f"data/{name}.rou.xml", "--tripinfo-output", "tripinfo.xml"],
     )
     run()
     
