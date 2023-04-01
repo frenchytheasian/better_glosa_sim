@@ -1,14 +1,23 @@
 import random
+import os
+import optparse
 
 def generate_route1(name: str):
     N = 1000
     demand = 1.0 / 10
 
+    edges = ''
+    with open(f'data/edges.tmp', 'r') as f:
+        edges = f.read().split(',')
+        edges = ' '.join(edges)
+
+    os.remove(f'data/edges.tmp')
+
     with open(f'data/{name}.rou.xml', 'w') as f:
         f.write(
 f"""<routes>
     <vType id="type1" accel="0.8" decel="4.5" sigma="0.5" length="5" minGap="2.5" maxSpeed="16.67" guiShape="passenger"/>
-    <route id="right" edges="1r 2r 3r 4r 5r 6r 7r 8r 9r 10r" />
+    <route id="right" edges="{edges}" />
 """)
 
         for i in range(N):

@@ -1,34 +1,42 @@
 import subprocess
 
-def generate_nod1(name: str):
+def generate_nod1(name: str, num_intersections: int = 10):
     with open(f'data/{name}.nod.xml', 'w') as f:
         f.write(
 f"""<?xml version="1.0" encoding="UTF-8"?>
 <nodes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/nodes_file.xsd">
-    <node id="beg" x="0" y="0" type="priority" />
-    <node id="end" x="1000" y="0" type="priority" />
+    <node id="beg" x="-100" y="0" type="priority" />
+    <node id="end" x="{num_intersections * 100}" y="0" type="priority" />
 
 """)
-        for i in range(1, 10):
+        for i in range(0, num_intersections):
             f.write(f"""\t<node id="{i}" x="{i*100}" y="0" type="traffic_light" />\n""")
 
         f.write("""</nodes>""")
                 
-def generate_edg1(name: str):
+def generate_edg1(name: str, num_intersections: int = 10):
+    edges = []
     with open(f'data/{name}.edg.xml', 'w') as f:
         f.write(
 f"""<?xml version="1.0" encoding="UTF-8"?>
 <edges xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/edges_file.xsd">
 
 """)
-        f.write(f"""\t<edge id="1r" from="beg" to="1" numLanes="1" priority="78" speed="13.89" />\n""")
-        for i in range(2, 10):
+        f.write(f"""\t<edge id="0r" from="beg" to="0" numLanes="1" priority="78" speed="13.89" />\n""")
+        edges.append('0r')
+        for i in range(1, num_intersections):
             f.write(f"""\t<edge id="{i}r" from="{i-1}" to="{i}" numLanes="1" priority="78" speed="13.89" />\n""")
-        f.write(f"""\t<edge id="10r" from="9" to="end" numLanes="1" priority="78" speed="13.89" />\n""")
+            edges.append(f'{i}r')
+
+        f.write(f"""\t<edge id="{num_intersections}r" from="{num_intersections - 1}" to="end" numLanes="1" priority="78" speed="13.89" />\n""")
+        edges.append(f'{num_intersections}r')
 
         f.write("""</edges>""")
+    
+    with open(f'data/edges.tmp', 'w') as f:
+        f.write(','.join(edges))
 
-def generate_network1(name: str):
-    generate_nod1(name)
-    generate_edg1(name)
+def generate_network1(name: str, num_intersections: int = 10):
+    generate_nod1(name, num_intersections)
+    generate_edg1(name, num_intersections)
     subprocess.run(['netconvert', '-n', f'data/{name}.nod.xml', '-e', f'data/{name}.edg.xml', '-o', f'data/{name}.net.xml'])

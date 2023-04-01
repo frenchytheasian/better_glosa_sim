@@ -57,7 +57,7 @@ if __name__ == "__main__":
         sumoBinary = checkBinary("sumo-gui")
 
     name = options.filename
-    generate_scenario(name)
+    generate_scenario(name, int(options.intersections))
     traci.start(
         [sumoBinary, "-n", f"data/{name}.net.xml", "-r", f"data/{name}.rou.xml", "--tripinfo-output", "tripinfo.xml"],
     )
