@@ -6,6 +6,7 @@ import traci
 from sumolib import checkBinary
 
 from netedit.scenarios import generate_scenario
+from helpers import get_static_signal_schedule, get_state
 
 if "SUMO_HOME" in os.environ:
     tools = os.path.join(os.environ["SUMO_HOME"], "tools")
@@ -13,15 +14,14 @@ if "SUMO_HOME" in os.environ:
 else:
     sys.exit("please declare environment variable 'SUMO_HOME'")
 
-def run():
+def run(name: str):
     """execute the TraCI control loop"""
     step = 0
-    trafficlights = traci.trafficlight.getIDList()
-    print(traci.trafficlight.getCompleteRedYellowGreenDefinition("0"))
+    tl_schedules = get_static_signal_schedule(name)
     # we start with phase 2 where EW has green
     while traci.simulation.getMinExpectedNumber() > 0:
         traci.simulationStep()
-        vehicles = traci.vehicle.getIDList()
+        get_state()
         
         step += 1
     traci.close()
@@ -72,5 +72,5 @@ if __name__ == "__main__":
     traci.start(
         [sumoBinary, "-n", f"data/{name}.net.xml", "-r", f"data/{name}.rou.xml", "-a", f"data/{name}.add.xml", "--tripinfo-output", "output/tripinfo.xml", "--emission-output", "output/emission.xml", "--full-output", "output/full.xml"],
     )
-    run()
+    run(name)
     os.system(f"rm -rf data")

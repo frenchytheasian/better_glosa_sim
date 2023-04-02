@@ -1,7 +1,24 @@
 import xml.etree.cElementTree as ET
 from typing import List, Dict
 
-def _get_singal_schedule(tlLogic: ET.Element) -> List[int]:
+import traci
+
+def get_vehicle_state(vehicle: str):
+    state = {}
+    state['position'] = traci.vehicle.getPosition(vehicle)
+    state['speed'] = traci.vehicle.getSpeed(vehicle)
+
+    return state
+
+def get_state():
+    """get the state of the simulation"""
+    time = traci.simulation.getTime()
+    vehicles = traci.vehicle.getIDList()
+    for vehicle in vehicles:
+        state = get_vehicle_state(vehicle)
+        print(f"{time} {vehicle} {state['position']} {state['speed']}")
+
+def _get_single_schedule(tlLogic: ET.Element) -> List[int]:
     """get the signal schedule
     
     The description of the schedule is as follows:
@@ -29,11 +46,7 @@ def get_static_signal_schedule(name: str) -> Dict[str, List[int]]:
 
     schedules = {}
     for tlLogic in tlLogics:
-        schedule = _get_singal_schedule(tlLogic)
+        schedule = _get_single_schedule(tlLogic)
         schedules[tlLogic.attrib['id']] = schedule
     
     return schedules
-        
-
-if __name__ == "__main__":
-    print(get_static_signal_schedule('test'))
