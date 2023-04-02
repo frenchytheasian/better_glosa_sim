@@ -1,8 +1,8 @@
 from pathlib import Path
 
-from networks import generate_network1
-from routes import generate_route1
-from additional import generate_tllogic1
+from netedit.networks import generate_network1
+from netedit.routes import generate_route1
+from netedit.additional import generate_tllogic1
 
 def generate_scenario(name: str, num_intersections: int = 10, scenario: int = 1):
     if not Path('data').exists():

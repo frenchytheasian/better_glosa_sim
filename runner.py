@@ -5,7 +5,7 @@ import optparse
 import traci
 from sumolib import checkBinary
 
-from scenarios import generate_scenario
+from netedit.scenarios import generate_scenario
 
 if "SUMO_HOME" in os.environ:
     tools = os.path.join(os.environ["SUMO_HOME"], "tools")
@@ -64,8 +64,9 @@ if __name__ == "__main__":
 
     name = options.filename
     generate_scenario(name, int(options.intersections), int(options.scenario))
+
     traci.start(
-        [sumoBinary, "-n", f"data/{name}.net.xml", "-r", f"data/{name}.rou.xml", "-a", f"data/{name}.add.xml", "--tripinfo-output", "tripinfo.xml", "--emission-output", "emission.xml"],
+        [sumoBinary, "-n", f"data/{name}.net.xml", "-r", f"data/{name}.rou.xml", "-a", f"data/{name}.add.xml", "--tripinfo-output", "output/tripinfo.xml", "--emission-output", "output/emission.xml"],
     )
     run()
     os.system(f"rm -rf data")
