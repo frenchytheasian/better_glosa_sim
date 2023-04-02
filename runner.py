@@ -44,6 +44,12 @@ def get_options():
         default="test",
         help="set filename"
     )
+    optParser.add_option(
+        "--scenario",
+        action="store",
+        default=1,
+        help="set scenario"
+    )
     options, args = optParser.parse_args()
     return options
 
@@ -57,7 +63,7 @@ if __name__ == "__main__":
         sumoBinary = checkBinary("sumo-gui")
 
     name = options.filename
-    generate_scenario(name, int(options.intersections))
+    generate_scenario(name, int(options.intersections), int(options.scenario))
     traci.start(
         [sumoBinary, "-n", f"data/{name}.net.xml", "-r", f"data/{name}.rou.xml", "-a", f"data/{name}.add.xml", "--tripinfo-output", "tripinfo.xml"],
     )
