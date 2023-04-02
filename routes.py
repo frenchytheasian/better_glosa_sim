@@ -1,6 +1,5 @@
 import random
 import os
-import optparse
 
 def generate_route1(name: str):
     N = 1000

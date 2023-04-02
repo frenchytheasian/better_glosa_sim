@@ -1,6 +1,8 @@
 import subprocess
 
 def generate_nod1(name: str, num_intersections: int = 10):
+    temp_nod_file = open(f'data/nod.tmp', 'a')
+
     with open(f'data/{name}.nod.xml', 'w') as f:
         f.write(
 f"""<?xml version="1.0" encoding="UTF-8"?>
@@ -9,10 +11,13 @@ f"""<?xml version="1.0" encoding="UTF-8"?>
     <node id="end" x="{num_intersections * 100}" y="0" type="priority" />
 
 """)
+    
         for i in range(0, num_intersections):
             f.write(f"""\t<node id="{i}" x="{i*100}" y="0" type="traffic_light" />\n""")
+            temp_nod_file.write(f'{i} ')
 
         f.write("""</nodes>""")
+    temp_nod_file.close()
                 
 def generate_edg1(name: str, num_intersections: int = 10):
     edges = []
