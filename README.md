@@ -1,6 +1,6 @@
 # Better GLOSA Simulator
 
-This repository contains python code for the creation of SUMO simulations. This was done for Dr. Ismail's CS490 Advanced Wireless Sensor Networks class
+This repository contains python code for the creation of SUMO simulations. I am trying to run analysis on different scenarios in which vehicles have predictive cruise control capagilities with relationship to the upcoming traffic signals. This was done for Dr. Ismail's CS490 Advanced Wireless Sensor Networks class
 
 # Instructions for Running
 
