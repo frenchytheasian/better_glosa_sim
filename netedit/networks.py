@@ -7,13 +7,13 @@ def generate_nod1(name: str, num_intersections: int = 10):
         f.write(
 f"""<?xml version="1.0" encoding="UTF-8"?>
 <nodes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/nodes_file.xsd">
-    <node id="beg" x="-100" y="0" type="priority" />
-    <node id="end" x="{num_intersections * 100}" y="0" type="priority" />
+    <node id="beg" x="-200" y="0" type="priority" />
+    <node id="end" x="{num_intersections * 200}" y="0" type="priority" />
 
 """)
     
         for i in range(0, num_intersections):
-            f.write(f"""\t<node id="{i}" x="{i*100}" y="0" type="traffic_light" />\n""")
+            f.write(f"""\t<node id="{i}" x="{i*200}" y="0" type="traffic_light" />\n""")
             temp_nod_file.write(f'{i} ')
 
         f.write("""</nodes>""")

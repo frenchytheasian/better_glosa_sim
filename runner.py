@@ -6,7 +6,7 @@ import traci
 from sumolib import checkBinary
 
 from netedit.scenarios import generate_scenario
-from helpers import get_static_signal_schedule, get_state
+from helpers import get_static_signal_schedule, get_state, adjust_speed
 
 if "SUMO_HOME" in os.environ:
     tools = os.path.join(os.environ["SUMO_HOME"], "tools")
@@ -21,7 +21,10 @@ def run(name: str):
     # we start with phase 2 where EW has green
     while traci.simulation.getMinExpectedNumber() > 0:
         traci.simulationStep()
-        get_state()
+        state = get_state()
+
+        for vehicle in state.keys():
+            adjust_speed(state[vehicle], tl_schedules)
         
         step += 1
     traci.close()

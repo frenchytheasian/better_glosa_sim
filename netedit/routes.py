@@ -15,7 +15,7 @@ def generate_route1(name: str):
     with open(f'data/{name}.rou.xml', 'w') as f:
         f.write(
 f"""<routes>
-    <vType id="type1" accel="0.8" decel="4.5" sigma="0.5" length="5" minGap="2.5" maxSpeed="16.67" guiShape="passenger"/>
+    <vType id="type1" accel="0.8" decel="4.5" sigma="0.5" length="5" minGap="2.5" maxSpeed="55" guiShape="passenger"/>
     <route id="right" edges="{edges}" />
 """)
 
