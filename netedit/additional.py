@@ -20,7 +20,7 @@ def generate_tllogic1(name: str):
             random.shuffle(phases)
             f.write(f"""    <tlLogic id="{edge}" type="static" programID="tl{edge}" offset="0">\n""")
             f.write('\n'.join(phases))
-            f.write(f"""\n\t</tlLogic>""")
+            f.write(f"""\n\t</tlLogic>\n""")
 
         f.write(f"""</additional>""")
 

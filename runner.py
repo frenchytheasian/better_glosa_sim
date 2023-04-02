@@ -16,9 +16,13 @@ else:
 def run():
     """execute the TraCI control loop"""
     step = 0
+    trafficlights = traci.trafficlight.getIDList()
+    print(traci.trafficlight.getCompleteRedYellowGreenDefinition("0"))
     # we start with phase 2 where EW has green
     while traci.simulation.getMinExpectedNumber() > 0:
         traci.simulationStep()
+        vehicles = traci.vehicle.getIDList()
+        
         step += 1
     traci.close()
     sys.stdout.flush()
@@ -66,7 +70,7 @@ if __name__ == "__main__":
     generate_scenario(name, int(options.intersections), int(options.scenario))
 
     traci.start(
-        [sumoBinary, "-n", f"data/{name}.net.xml", "-r", f"data/{name}.rou.xml", "-a", f"data/{name}.add.xml", "--tripinfo-output", "output/tripinfo.xml", "--emission-output", "output/emission.xml"],
+        [sumoBinary, "-n", f"data/{name}.net.xml", "-r", f"data/{name}.rou.xml", "-a", f"data/{name}.add.xml", "--tripinfo-output", "output/tripinfo.xml", "--emission-output", "output/emission.xml", "--full-output", "output/full.xml"],
     )
     run()
     os.system(f"rm -rf data")

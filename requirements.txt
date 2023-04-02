@@ -1,1 +1,2 @@
 traci==1.16.0
+matplotlib==3.7.1
