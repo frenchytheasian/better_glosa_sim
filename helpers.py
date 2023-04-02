@@ -3,20 +3,40 @@ from typing import List, Dict
 
 import traci
 
-def get_vehicle_state(vehicle: str):
+def _get_vehicle_state(vehicle: str, tls: dict):
     state = {}
+
     state['position'] = traci.vehicle.getPosition(vehicle)
+    state['upcoming_tls'] = []
+    for id, tl in tls.items():
+        if state['position'][0] < tl[0]:
+            state['upcoming_tls'].append({id: tl[0] - state['position'][0]})
+
     state['speed'] = traci.vehicle.getSpeed(vehicle)
 
     return state
+
+def _get_tl_position():
+    """get the position of the traffic lights"""
+    tl_positions = {}
+    for tl in traci.trafficlight.getIDList():
+        tl_positions[tl] = traci.junction.getPosition(tl)
+    
+    return tl_positions
 
 def get_state():
     """get the state of the simulation"""
     time = traci.simulation.getTime()
     vehicles = traci.vehicle.getIDList()
+
+    states = {}
+    tl_positions = _get_tl_position()
     for vehicle in vehicles:
-        state = get_vehicle_state(vehicle)
-        print(f"{time} {vehicle} {state['position']} {state['speed']}")
+        state = _get_vehicle_state(vehicle, tl_positions)
+        states[vehicle] = state
+
+    states['time'] = time
+    return states
 
 def _get_single_schedule(tlLogic: ET.Element) -> List[int]:
     """get the signal schedule
