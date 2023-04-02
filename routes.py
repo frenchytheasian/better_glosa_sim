@@ -3,7 +3,7 @@ import os
 
 def generate_route1(name: str):
     N = 1000
-    demand = 1.0 / 10
+    demand = 1.0 / 100
 
     edges = ''
     with open(f'data/edges.tmp', 'r') as f:
@@ -19,10 +19,15 @@ f"""<routes>
     <route id="right" edges="{edges}" />
 """)
 
-        for i in range(N):
-            if random.uniform(0, 1) < demand:
-                f.write(
-                    f'\t<vehicle id="right_{i}" type="type1" route="right" depart="{i}" />\n'
-                )
+        # for i in range(N):
+        #     if random.uniform(0, 1) < demand:
+        #         f.write(
+        #             f'\t<vehicle id="right_{i}" type="type1" route="right" depart="{i}" />\n'
+        #         )
+
+        for i in range(int(N/100)):
+            f.write(
+                f'\t<vehicle id="right_{i*100}" type="type1" route="right" depart="{i*100}" />\n'
+            )
         
         f.write("</routes>")

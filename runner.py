@@ -65,7 +65,7 @@ if __name__ == "__main__":
     name = options.filename
     generate_scenario(name, int(options.intersections), int(options.scenario))
     traci.start(
-        [sumoBinary, "-n", f"data/{name}.net.xml", "-r", f"data/{name}.rou.xml", "-a", f"data/{name}.add.xml", "--tripinfo-output", "tripinfo.xml"],
+        [sumoBinary, "-n", f"data/{name}.net.xml", "-r", f"data/{name}.rou.xml", "-a", f"data/{name}.add.xml", "--tripinfo-output", "tripinfo.xml", "--emission-output", "emission.xml"],
     )
     run()
     os.system(f"rm -rf data")
