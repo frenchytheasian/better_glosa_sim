@@ -6,7 +6,8 @@ import traci
 from sumolib import checkBinary
 
 from netedit.scenarios import generate_scenario
-from helpers import get_static_signal_schedule, get_state, adjust_speed
+from util.getters import get_static_signal_schedule, get_state
+from util.setters import adjust_speed
 
 if "SUMO_HOME" in os.environ:
     tools = os.path.join(os.environ["SUMO_HOME"], "tools")
