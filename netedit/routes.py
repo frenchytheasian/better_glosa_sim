@@ -27,9 +27,8 @@ f"""<routes>
 
         
         v_id = 'pcc'
-        for i in range(int(N/100)):
-            f.write(
-                f'\t<vehicle id="{v_id}_{i*100}" type="type1" route="right" depart="{i*100}" />\n'
-            )
+        f.write(
+            f'\t<vehicle id="{v_id}_{0}" type="type1" route="right" depart="{0}" />\n'
+        )
         
         f.write("</routes>")
