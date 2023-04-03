@@ -20,3 +20,8 @@ pip install -r requirements.txt
 ```bash
 python runner.py
 ```
+
+## Viewing Output
+```bash
+python graph.py
+```
