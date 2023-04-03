@@ -6,8 +6,6 @@ def _normalize_values(values: dict) -> dict:
     max_len = max([len(values[id]) for id in values.keys() if id != 'time'])
     values['time'] = values['time'][:max_len]
 
-    print(max_len)
-
     for id in values.keys():
         values[id] = values[id] + [values[id][-1]] * (max_len - len(values[id]))
     return values
