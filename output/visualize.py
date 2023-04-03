@@ -12,5 +12,9 @@ def visualize(attrib: str):
     for id, values in val.items():
         print(values)
         plt.plot(time, values, label=id)
+
+    plt.xlabel("timestep")
+    plt.ylabel(attrib)
+    plt.title(f"{attrib} over time")
     plt.legend()
     plt.show()
