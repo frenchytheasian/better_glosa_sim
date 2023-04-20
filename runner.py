@@ -16,7 +16,12 @@ else:
     sys.exit("please declare environment variable 'SUMO_HOME'")
 
 def run(name: str):
-    """execute the TraCI control loop"""
+    """
+    execute the TraCI control loop
+
+    Args:
+        name (str): name of the scenario
+    """
     step = 0
     tl_schedules = get_static_signal_schedule(name)
     # we start with phase 2 where EW has green
@@ -52,12 +57,6 @@ def get_options():
         default="test",
         help="set filename"
     )
-    optParser.add_option(
-        "--scenario",
-        action="store",
-        default=1,
-        help="set scenario"
-    )
     options, args = optParser.parse_args()
     return options
 
@@ -71,7 +70,7 @@ if __name__ == "__main__":
         sumoBinary = checkBinary("sumo-gui")
 
     name = options.filename
-    generate_scenario(name, int(options.intersections), int(options.scenario))
+    generate_scenario(name, int(options.intersections))
 
     traci.start(
         [sumoBinary, "-n", f"data/{name}.net.xml", "-r", f"data/{name}.rou.xml", "-a", f"data/{name}.add.xml", "--tripinfo-output", "output/tripinfo.xml", "--emission-output", "output/emission.xml", "--full-output", "output/full.xml"],

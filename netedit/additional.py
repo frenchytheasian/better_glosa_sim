@@ -2,6 +2,12 @@ import random
 import os
 
 def generate_tllogic1(name: str):
+    """
+    Generate a random traffic light logic for the given scenario
+
+    Args:
+        name (str): name of the network
+    """
     red_duration = [10, 30]
     green_duration = [10, 30]
 

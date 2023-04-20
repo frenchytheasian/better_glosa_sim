@@ -1,6 +1,13 @@
 import subprocess
 
 def generate_nod1(name: str, num_intersections: int = 10):
+    """
+    Generates a .nod.xml file for a network with a given number of intersections
+
+    Args:
+        name (str): name of the network
+        num_intersections (int, optional): number of intersections. Defaults to 10.
+    """
     temp_nod_file = open(f'data/nod.tmp', 'a')
 
     with open(f'data/{name}.nod.xml', 'w') as f:
@@ -20,6 +27,13 @@ f"""<?xml version="1.0" encoding="UTF-8"?>
     temp_nod_file.close()
                 
 def generate_edg1(name: str, num_intersections: int = 10):
+    """
+    Generates a .edg.xml file for a network with a given number of intersections
+
+    Args:
+        name (str): name of the network
+        num_intersections (int, optional): number of intersections. Defaults to 10.
+    """
     edges = []
     with open(f'data/{name}.edg.xml', 'w') as f:
         f.write(
@@ -42,6 +56,12 @@ f"""<?xml version="1.0" encoding="UTF-8"?>
         f.write(','.join(edges))
 
 def generate_network1(name: str, num_intersections: int = 10):
+    """Generate a network with a given number of intersections
+
+    Args:
+        name (str): name of the network
+        num_intersections (int, optional): number of intersections. Defaults to 10.
+    """
     generate_nod1(name, num_intersections)
     generate_edg1(name, num_intersections)
     subprocess.run(['netconvert', '-n', f'data/{name}.nod.xml', '-e', f'data/{name}.edg.xml', '-o', f'data/{name}.net.xml'])

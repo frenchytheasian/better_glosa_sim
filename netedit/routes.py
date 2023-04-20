@@ -2,6 +2,12 @@ import random
 import os
 
 def generate_route1(name: str):
+    """
+    Generate a random route for the given scenario
+
+    Args:
+        name (str): name of the network
+    """
     N = 1000
     demand = 1.0 / 100
 
