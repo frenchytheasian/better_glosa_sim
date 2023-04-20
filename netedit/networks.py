@@ -14,13 +14,13 @@ def generate_nod1(name: str, num_intersections: int = 10):
         f.write(
 f"""<?xml version="1.0" encoding="UTF-8"?>
 <nodes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/nodes_file.xsd">
-    <node id="beg" x="-200" y="0" type="priority" />
-    <node id="end" x="{num_intersections * 200}" y="0" type="priority" />
+    <node id="beg" x="-1000" y="0" type="priority" />
+    <node id="end" x="{num_intersections * 1000}" y="0" type="priority" />
 
 """)
     
         for i in range(0, num_intersections):
-            f.write(f"""\t<node id="{i}" x="{i*200}" y="0" type="traffic_light" />\n""")
+            f.write(f"""\t<node id="{i}" x="{i*1000}" y="0" type="traffic_light" />\n""")
             temp_nod_file.write(f'{i} ')
 
         f.write("""</nodes>""")
@@ -41,13 +41,13 @@ f"""<?xml version="1.0" encoding="UTF-8"?>
 <edges xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/edges_file.xsd">
 
 """)
-        f.write(f"""\t<edge id="0r" from="beg" to="0" numLanes="1" priority="78" speed="13.89" />\n""")
+        f.write(f"""\t<edge id="0r" from="beg" to="0" numLanes="1" priority="78" speed="20.11" />\n""")
         edges.append('0r')
         for i in range(1, num_intersections):
-            f.write(f"""\t<edge id="{i}r" from="{i-1}" to="{i}" numLanes="1" priority="78" speed="13.89" />\n""")
+            f.write(f"""\t<edge id="{i}r" from="{i-1}" to="{i}" numLanes="1" priority="78" speed="20.11" />\n""")
             edges.append(f'{i}r')
 
-        f.write(f"""\t<edge id="{num_intersections}r" from="{num_intersections - 1}" to="end" numLanes="1" priority="78" speed="13.89" />\n""")
+        f.write(f"""\t<edge id="{num_intersections}r" from="{num_intersections - 1}" to="end" numLanes="1" priority="78" speed="20.11" />\n""")
         edges.append(f'{num_intersections}r')
 
         f.write("""</edges>""")

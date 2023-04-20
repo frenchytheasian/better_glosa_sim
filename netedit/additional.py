@@ -8,8 +8,8 @@ def generate_tllogic1(name: str):
     Args:
         name (str): name of the network
     """
-    red_duration = [10, 30]
-    green_duration = [10, 30]
+    red_duration = [20, 45]
+    green_duration = [20, 45]
 
     edges = []
     with open(f'data/nod.tmp', 'r') as f:
