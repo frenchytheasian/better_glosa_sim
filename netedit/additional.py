@@ -7,8 +7,9 @@ def generate_tllogic1():
     """
     Generate a random traffic light logic for the given scenario
     """
-    name = get_options().filename
-    random.seed(42)
+    options = get_options()
+    name = options.filename
+    random.seed(int(options.seed))
     red_duration = [20, 45]
     green_duration = [20, 45]
 

@@ -6,7 +6,8 @@ def generate_route1():
     """
     Generate a random route for the given scenario
     """
-    name = get_options().filename
+    options = get_options()
+    name = options.filename
     N = 1000
     demand = 1.0 / 100
 
@@ -30,8 +31,9 @@ f"""<routes>
         #             f'\t<vehicle id="right_{i}" type="type1" route="right" depart="{i}" />\n'
         #         )
 
-        
-        v_id = 'pcc'
+        v_id = 'normal'
+        if options.pcc:
+            v_id = 'pcc'
         f.write(
             f'\t<vehicle id="{v_id}_{0}" type="type1" route="right" depart="{0}" />\n'
         )
