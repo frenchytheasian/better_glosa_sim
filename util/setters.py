@@ -52,7 +52,7 @@ def _get_target_speed(
 ) -> float:
     """
     get the target speed of the vehicle
-    
+
     Args:
         upcoming_tls (list): upcoming traffic lights
         tl_schedules (dict): traffic light schedules
@@ -63,6 +63,26 @@ def _get_target_speed(
         key = list(tl.keys())[0]
         valid_bound = _get_v_bound_for_tl(tl, tl_schedules, env_v_bound)
         valid_bounds[key] = valid_bound
+
+    # Loop through the valid bounds for each traffic light and find the speed
+    # that is valid to pass all traffic lights at green. If this cannot be found, 
+    # try to find the speed that is valid to pass through all traffic lights
+    # except the last one. Repeat this until a valid speed is found.
+    intersection = set()
+    for i in range(len(valid_bounds)):
+        ranges = [
+            set(range(int(x[0] * 10), int(x[1] * 10)))
+            for x in list(valid_bounds.values())[: len(valid_bounds) - i]
+        ]
+        intersection = set.intersection(*ranges)
+        if len(intersection) > 0:
+            break
+    
+    valid_speeds = [x / 10.0 for x in intersection]
+
+    if len(valid_speeds) == 0:
+        return -1
+    return max(valid_speeds)
 
 
 def adjust_speed(vehicle_info: dict, tl_schedules: dict):
@@ -76,3 +96,7 @@ def adjust_speed(vehicle_info: dict, tl_schedules: dict):
     target_speed = _get_target_speed(
         vehicle_info["upcoming_tls"], tl_schedules, speed_bounds
     )
+
+    if target_speed == -1:
+        return
+    traci.vehicle.setSpeed(vehicle_info["id"], target_speed)
