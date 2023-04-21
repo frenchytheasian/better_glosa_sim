@@ -26,6 +26,6 @@ def visualize(attrib: str):
 
     now = datetime.now()
     now = now.strftime("%Y%m%d%H%M%S")
-    plt.savefig(f'graphs/{attrib}-{now}.png')
+    plt.savefig(f"graphs/{attrib}-{now}.png")
 
     return total

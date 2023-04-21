@@ -16,6 +16,7 @@ if "SUMO_HOME" in os.environ:
 else:
     sys.exit("please declare environment variable 'SUMO_HOME'")
 
+
 def run(name: str):
     """
     execute the TraCI control loop
@@ -32,7 +33,7 @@ def run(name: str):
 
         for vehicle in state.keys():
             adjust_speed(state[vehicle], tl_schedules)
-        
+
         step += 1
     traci.close()
     sys.stdout.flush()
@@ -50,7 +51,21 @@ if __name__ == "__main__":
     generate_scenario()
 
     traci.start(
-        [sumoBinary, "-n", f"data/{name}.net.xml", "-r", f"data/{name}.rou.xml", "-a", f"data/{name}.add.xml", "--tripinfo-output", "output/tripinfo.xml", "--emission-output", "output/emission.xml", "--full-output", "output/full.xml"],
+        [
+            sumoBinary,
+            "-n",
+            f"data/{name}.net.xml",
+            "-r",
+            f"data/{name}.rou.xml",
+            "-a",
+            f"data/{name}.add.xml",
+            "--tripinfo-output",
+            "output/tripinfo.xml",
+            "--emission-output",
+            "output/emission.xml",
+            "--full-output",
+            "output/full.xml",
+        ],
     )
     run(name)
 
@@ -59,4 +74,4 @@ if __name__ == "__main__":
 
     print(f"Average speed: {speed}")
     print(f"Total CO2: {c02}")
-    os.system(f"rm -rf data")
+    os.system("rm -rf data")

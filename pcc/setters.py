@@ -65,7 +65,7 @@ def _get_target_speed(
         valid_bounds[key] = valid_bound
 
     # Loop through the valid bounds for each traffic light and find the speed
-    # that is valid to pass all traffic lights at green. If this cannot be found, 
+    # that is valid to pass all traffic lights at green. If this cannot be found,
     # try to find the speed that is valid to pass through all traffic lights
     # except the last one. Repeat this until a valid speed is found.
     intersection = set()
@@ -77,12 +77,12 @@ def _get_target_speed(
         intersection = set.intersection(*ranges)
         if len(intersection) > 0:
             break
-    
+
     valid_speeds = [x / 10.0 for x in intersection]
 
     if len(valid_speeds) == 0:
         return -1
-    
+
     # current_speed = traci.vehicle.getSpeed(traci.vehicle.getIDList()[0])
     # if current_speed > valid_speeds[0] and current_speed < valid_speeds[-1]:
     #     return current_speed
