@@ -79,6 +79,9 @@ if __name__ == "__main__":
     )
     run(name)
 
-    visualize("speed")
-    visualize("CO2")
+    speed = visualize("speed")
+    c02 = visualize("CO2")
+
+    print(f"Average speed: {speed}")
+    print(f"Total CO2: {c02}")
     os.system(f"rm -rf data")

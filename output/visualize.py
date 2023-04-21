@@ -12,6 +12,7 @@ def visualize(attrib: str):
     time = val["time"]
     del val["time"]
 
+    total = sum(list(val.values())[0])
     for id, values in val.items():
         plt.plot(time, values, label=id)
 
@@ -26,3 +27,5 @@ def visualize(attrib: str):
     now = datetime.now()
     now = now.strftime("%Y%m%d%H%M%S")
     plt.savefig(f'graphs/{attrib}-{now}.png')
+
+    return total
