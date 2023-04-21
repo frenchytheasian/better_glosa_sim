@@ -8,6 +8,7 @@ def generate_tllogic1(name: str):
     Args:
         name (str): name of the network
     """
+    random.seed(42)
     red_duration = [20, 45]
     green_duration = [20, 45]
 

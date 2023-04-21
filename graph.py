@@ -14,5 +14,7 @@ def get_options():
 
     return options
 
-options = get_options()
-visualize(options.attrib)
+
+if __name__ == "__main__":
+    options = get_options()
+    visualize(options.attrib)

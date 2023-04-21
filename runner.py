@@ -1,6 +1,7 @@
 import os
 import sys
 import optparse
+import subprocess
 
 import traci
 from sumolib import checkBinary
@@ -8,6 +9,7 @@ from sumolib import checkBinary
 from netedit.scenarios import generate_scenario
 from pcc.getters import get_static_signal_schedule, get_state
 from pcc.setters import adjust_speed
+from output.visualize import visualize
 
 if "SUMO_HOME" in os.environ:
     tools = os.path.join(os.environ["SUMO_HOME"], "tools")
@@ -76,4 +78,7 @@ if __name__ == "__main__":
         [sumoBinary, "-n", f"data/{name}.net.xml", "-r", f"data/{name}.rou.xml", "-a", f"data/{name}.add.xml", "--tripinfo-output", "output/tripinfo.xml", "--emission-output", "output/emission.xml", "--full-output", "output/full.xml"],
     )
     run(name)
+
+    visualize("speed")
+    visualize("CO2")
     os.system(f"rm -rf data")
