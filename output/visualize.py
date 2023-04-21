@@ -24,5 +24,5 @@ def visualize(attrib: str):
         os.mkdir("graphs")
 
     now = datetime.now()
-    now = now.strftime("%d%m%Y%H%M%S")
+    now = now.strftime("%Y%m%d%H%M%S")
     plt.savefig(f'graphs/{attrib}-{now}.png')
