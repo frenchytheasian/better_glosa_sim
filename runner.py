@@ -7,7 +7,6 @@ from sumolib import checkBinary
 from netedit.scenarios import generate_scenario
 from pcc.getters import get_static_signal_schedule, get_state
 from pcc.setters import adjust_speed
-from output.visualize import visualize
 from settings import get_options
 
 if "SUMO_HOME" in os.environ:
@@ -69,9 +68,4 @@ if __name__ == "__main__":
     )
     run(name)
 
-    speed = visualize("speed")
-    c02 = visualize("CO2")
-
-    print(f"Average speed: {speed}")
-    print(f"Total CO2: {c02}")
     os.system("rm -rf data")
