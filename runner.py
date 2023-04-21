@@ -1,7 +1,5 @@
 import os
 import sys
-import optparse
-import subprocess
 
 import traci
 from sumolib import checkBinary
@@ -10,6 +8,7 @@ from netedit.scenarios import generate_scenario
 from pcc.getters import get_static_signal_schedule, get_state
 from pcc.setters import adjust_speed
 from output.visualize import visualize
+from settings import get_options
 
 if "SUMO_HOME" in os.environ:
     tools = os.path.join(os.environ["SUMO_HOME"], "tools")
@@ -39,30 +38,6 @@ def run(name: str):
     sys.stdout.flush()
 
 
-def get_options():
-    optParser = optparse.OptionParser()
-    optParser.add_option(
-        "--nogui",
-        action="store_true",
-        default=False,
-        help="run the commandline version of sumo",
-    )
-    optParser.add_option(
-        "--intersections",
-        action="store",
-        default=10,
-        help="set number of intersections"
-    )
-    optParser.add_option(
-        "--filename",
-        action="store",
-        default="test",
-        help="set filename"
-    )
-    options, args = optParser.parse_args()
-    return options
-
-
 if __name__ == "__main__":
     options = get_options()
 
@@ -72,7 +47,7 @@ if __name__ == "__main__":
         sumoBinary = checkBinary("sumo-gui")
 
     name = options.filename
-    generate_scenario(name, int(options.intersections))
+    generate_scenario()
 
     traci.start(
         [sumoBinary, "-n", f"data/{name}.net.xml", "-r", f"data/{name}.rou.xml", "-a", f"data/{name}.add.xml", "--tripinfo-output", "output/tripinfo.xml", "--emission-output", "output/emission.xml", "--full-output", "output/full.xml"],

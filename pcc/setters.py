@@ -82,6 +82,11 @@ def _get_target_speed(
 
     if len(valid_speeds) == 0:
         return -1
+    
+    # current_speed = traci.vehicle.getSpeed(traci.vehicle.getIDList()[0])
+    # if current_speed > valid_speeds[0] and current_speed < valid_speeds[-1]:
+    #     return current_speed
+
     return max(valid_speeds)
 
 

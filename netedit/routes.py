@@ -1,13 +1,12 @@
-import random
 import os
 
-def generate_route1(name: str):
+from settings import get_options
+
+def generate_route1():
     """
     Generate a random route for the given scenario
-
-    Args:
-        name (str): name of the network
     """
+    name = get_options().filename
     N = 1000
     demand = 1.0 / 100
 

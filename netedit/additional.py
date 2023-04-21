@@ -1,13 +1,13 @@
 import random
 import os
 
-def generate_tllogic1(name: str):
+from settings import get_options
+
+def generate_tllogic1():
     """
     Generate a random traffic light logic for the given scenario
-
-    Args:
-        name (str): name of the network
     """
+    name = get_options().filename
     random.seed(42)
     red_duration = [20, 45]
     green_duration = [20, 45]
