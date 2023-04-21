@@ -8,13 +8,16 @@ from output.parse_xml import get_vehicle_attrib
 
 def visualize(attrib: str):
     """visualize the attribute"""
-    val = get_vehicle_attrib(attrib)
+    response = get_vehicle_attrib(attrib)
+    val = response[0]
     time = val["time"]
     del val["time"]
 
     total = sum(list(val.values())[0])
+    car = ""
     for id, values in val.items():
         plt.plot(time, values, label=id)
+        car = id
 
     plt.xlabel("timestep")
     plt.ylabel(attrib)
@@ -26,6 +29,6 @@ def visualize(attrib: str):
 
     now = datetime.now()
     now = now.strftime("%Y%m%d%H%M%S")
-    plt.savefig(f"graphs/{attrib}-{now}.png")
+    plt.savefig(f"graphs/{attrib}-{car}-{now}.png")
 
     return total
