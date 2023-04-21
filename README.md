@@ -25,3 +25,7 @@ python runner.py
 ```bash
 python graph.py
 ```
+
+
+## For class
+The file "project.py" contains the code I wrote to run the program for my project
