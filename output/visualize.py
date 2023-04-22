@@ -13,7 +13,17 @@ def visualize(attrib: str):
     time = val["time"]
     del val["time"]
 
-    total = sum(list(val.values())[0])
+    values = list(val.values())[0]
+    if attrib == "waiting":
+        total = sum(
+            [
+                wait
+                for i, wait in enumerate(values)
+                if i == len(values) - 1 or values[i + 1] == 0
+            ]
+        )
+    else:
+        total = sum(values)
     car = ""
     for id, values in val.items():
         plt.plot(time, values, label=id)
