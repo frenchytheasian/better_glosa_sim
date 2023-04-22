@@ -3,6 +3,8 @@ import xml.etree.cElementTree as ET
 
 import traci
 
+from settings import get_options
+
 
 #################
 ### GET STATE ###
@@ -57,7 +59,7 @@ def _get_single_schedule(tlLogic: ET.Element) -> List[int]:
     [time until the first green, time until the first red,
     time until the second green, time until the second red, ...]
     """
-    N = 1100
+    N = int(get_options().intersections) * 110
     phases = tlLogic.findall("phase")
     schedule = []
     r = (

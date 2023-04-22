@@ -11,7 +11,7 @@ def _get_speed_bounds(vehicle_info: dict) -> Tuple[float, float]:
 
     This is currently a simplified version of the speed bounds.
     """
-    min_v = 1.0
+    min_v = 0.0
     max_v = traci.vehicle.getAllowedSpeed(vehicle_info["id"])
     return min_v, max_v
 
@@ -25,7 +25,7 @@ def _get_v_bound_for_tl(
     Args:
         tl (dict): traffic light
         tl_schedules (dict): traffic light schedules
-        env_v_bound (tuple): environment velocity bounds
+        env_v_bound (tuple): environment velocity bounds (min, max)
     """
     time = traci.simulation.getTime()
     id, distance = tl.popitem()
@@ -33,18 +33,28 @@ def _get_v_bound_for_tl(
 
     for i in range(0, len(tl_schedule), 2):
         if tl_schedule[i + 1] <= 0:
+            # This means that this traffic light has already turned green. Ignore this
+            # case
             continue
 
         v_low = distance / tl_schedule[i + 1]
         if tl_schedule[i] <= 0:
+            # This means that this traffic light is green. Set the upper bound to the
+            # max speed
             v_high = float("inf")
         else:
+            # This means that this traffic light is red. Set the upper bound to the
+            # speed to hit green
             v_high = distance / tl_schedule[i]
 
-        if not v_low <= env_v_bound[1] and v_high >= env_v_bound[0]:
+        # if the (v_low, v_high) does not overlap with the environment bounds, then
+        # continue
+        if v_low > env_v_bound[1] or v_high < env_v_bound[0]:
             continue
         else:
             return max(v_low, env_v_bound[0]), min(v_high, env_v_bound[1])
+
+    return None
 
 
 def _get_target_speed(
@@ -73,6 +83,7 @@ def _get_target_speed(
         ranges = [
             set(range(int(x[0] * 10), int(x[1] * 10)))
             for x in list(valid_bounds.values())[: len(valid_bounds) - i]
+            if x is not None
         ]
         intersection = set.intersection(*ranges)
         if len(intersection) > 0:
@@ -97,6 +108,7 @@ def adjust_speed(vehicle_info: dict, tl_schedules: dict):
         vehicle_info (dict): A dictionary containing the vehicle information
         tl_schedules (dict): A dictionary containing the traffic light schedules
     """
+
     speed_bounds = _get_speed_bounds(vehicle_info)
     target_speed = _get_target_speed(
         vehicle_info["upcoming_tls"], tl_schedules, speed_bounds
