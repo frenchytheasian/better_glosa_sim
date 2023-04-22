@@ -9,21 +9,24 @@ def generate_nod1():
     options = get_options()
     name = options.filename
     num_intersections = int(options.intersections)
+    distance_between = int(options.distance_between)
+
     temp_nod_file = open("data/nod.tmp", "a")
 
     with open(f"data/{name}.nod.xml", "w") as f:
         f.write(
             f"""<?xml version="1.0" encoding="UTF-8"?>
 <nodes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/nodes_file.xsd">
-    <node id="beg" x="-1000" y="0" type="priority" />
-    <node id="end" x="{num_intersections * 1000}" y="0" type="priority" />
+    <node id="beg" x="-{distance_between}" y="0" type="priority" />
+    <node id="end" x="{num_intersections * distance_between}" y="0" type="priority" />
 
 """
         )
 
         for i in range(0, num_intersections):
             f.write(
-                f"""\t<node id="{i}" x="{i*1000}" y="0" type="traffic_light" />\n"""
+                f"""\t<node id="{i}" x="{i*distance_between}" \
+                    y="0" type="traffic_light" />\n"""
             )
             temp_nod_file.write(f"{i} ")
 

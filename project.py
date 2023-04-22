@@ -10,7 +10,7 @@ from output.parse_xml import get_runtime
 from output.visualize import visualize
 
 
-def process_data(pcc: bool, seed: int, intersections: int):
+def process_data(pcc: bool, seed: int, intersections: int, distance: int):
     """
     Generate output graphs and write total values to a .csv for later processing
     """
@@ -20,7 +20,7 @@ def process_data(pcc: bool, seed: int, intersections: int):
     path = f"output/{'pcc' if pcc else 'normal'}_data.csv"
     if not os.path.exists(path):
         with open(path, "a") as f:
-            f.write(f"is_pcc,seed,intersections,time,{','.join(attribs)}\n")
+            f.write(f"is_pcc,seed,intersections,distance,time,{','.join(attribs)}\n")
 
     speed = visualize("speed")
     CO2 = visualize("CO2")
@@ -30,14 +30,24 @@ def process_data(pcc: bool, seed: int, intersections: int):
     with open(path, "a") as f:
         writer_object = writer(f)
 
-        row = [pcc, seed, intersections, get_runtime(), speed, CO2, fuel, waiting]
+        row = [
+            pcc,
+            seed,
+            intersections,
+            distance,
+            get_runtime(),
+            speed,
+            CO2,
+            fuel,
+            waiting,
+        ]
 
         writer_object.writerow(row)
 
         f.close()
 
 
-def run(pcc: bool, intersections: int, seed: int):
+def run(pcc: bool, intersections: int, seed: int, distance: int):
     """Run the project with the given configurations
 
     Args:
@@ -70,7 +80,7 @@ def run(pcc: bool, intersections: int, seed: int):
             ]
         )
 
-    process_data(pcc, seed, intersections)
+    process_data(pcc, seed, intersections, distance)
 
 
 def main():
@@ -78,8 +88,8 @@ def main():
     Run the project multiple times with different parameters and calculate their outputs
     """
     for i in range(0, 11):
-        run(True, 10, i)
-        run(False, 10, i)
+        run(True, 10, i, 1000)
+        run(False, 10, i, 1000)
 
 
 if __name__ == "__main__":

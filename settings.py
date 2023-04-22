@@ -18,8 +18,11 @@ def get_options():
     optParser.add_option(
         "--filename", action="store", default="test", help="set filename"
     )
+    optParser.add_option(
+        "--distance_between", action="store", default=200, help="set distance between"
+    )
     optParser.add_option("--seed", action="store", default=0, help="set seed")
     optParser.add_option("--pcc", action="store_true", default=False, help="use pcc")
-    options, args = optParser.parse_args()
+    options, _ = optParser.parse_args()
 
     return options
