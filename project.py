@@ -3,8 +3,8 @@ This script runs the project with the necessary configurations to generate the n
 output for my project.
 """
 import subprocess
-from pathlib import Path
 from csv import writer
+import os
 
 from output.parse_xml import get_runtime
 from output.visualize import visualize
@@ -15,20 +15,22 @@ def process_data(pcc: bool, seed: int, intersections: int):
     Generate output graphs and write total values to a .csv for later processing
     """
     # Attribs to generate:
-    attribs = ["speed", "CO2"]
+    attribs = ["speed", "CO2", "fuel", "waiting"]
 
-    path = Path("outptut/sim_data.csv")
-    if not path.exists():
-        with open("output/sim_data.csv", "w") as f:
+    path = f"output/{'pcc' if pcc else 'normal'}_data.csv"
+    if not os.path.exists(path):
+        with open(path, "a") as f:
             f.write(f"is_pcc,seed,intersections,time,{','.join(attribs)}\n")
 
     speed = visualize("speed")
     CO2 = visualize("CO2")
+    fuel = visualize("fuel")
+    waiting = visualize("waiting")
 
-    with open("output/sim_data.csv", "a") as f:
+    with open(path, "a") as f:
         writer_object = writer(f)
 
-        row = [pcc, seed, intersections, get_runtime(), speed, CO2]
+        row = [pcc, seed, intersections, get_runtime(), speed, CO2, fuel, waiting]
 
         writer_object.writerow(row)
 
@@ -75,8 +77,9 @@ def main():
     """
     Run the project multiple times with different parameters and calculate their outputs
     """
-    run(True, 20, 0)
-    run(False, 20, 0)
+    for i in range(0, 11):
+        run(True, 10, i)
+        run(False, 10, i)
 
 
 if __name__ == "__main__":
