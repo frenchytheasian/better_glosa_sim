@@ -60,8 +60,7 @@ def _get_single_schedule(tlLogic: ET.Element) -> List[int]:
     time until the second green, time until the second red, ...]
     """
     num_intersections = int(get_options().intersections)
-    distance_between = int(get_options().distance_between)
-    N = num_intersections * (distance_between / 10)
+    N = num_intersections * 120
 
     phases = tlLogic.findall("phase")
     schedule = []

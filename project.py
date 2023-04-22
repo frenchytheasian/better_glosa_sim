@@ -5,19 +5,22 @@ output for my project.
 import subprocess
 from csv import writer
 import os
+import time
 
 from output.parse_xml import get_runtime
 from output.visualize import visualize
 
 
-def process_data(pcc: bool, seed: int, intersections: int, distance: int):
+def process_data(
+    filename: str, pcc: bool, seed: int, intersections: int, distance: int
+):
     """
     Generate output graphs and write total values to a .csv for later processing
     """
     # Attribs to generate:
     attribs = ["speed", "CO2", "fuel", "waiting"]
 
-    path = f"output/{'pcc' if pcc else 'normal'}_data.csv"
+    path = f"output/{filename}_{'pcc' if pcc else 'normal'}_data.csv"
     if not os.path.exists(path):
         with open(path, "a") as f:
             f.write(f"is_pcc,seed,intersections,distance,time,{','.join(attribs)}\n")
@@ -47,7 +50,7 @@ def process_data(pcc: bool, seed: int, intersections: int, distance: int):
         f.close()
 
 
-def run(pcc: bool, intersections: int, seed: int, distance: int):
+def run(filename: str, pcc: bool, intersections: int, seed: int, distance: int):
     """Run the project with the given configurations
 
     Args:
@@ -55,7 +58,7 @@ def run(pcc: bool, intersections: int, seed: int, distance: int):
     """
 
     if pcc:
-        subprocess.run(
+        completed_process = subprocess.run(
             [
                 "python",
                 "runner.py",
@@ -68,7 +71,7 @@ def run(pcc: bool, intersections: int, seed: int, distance: int):
             ]
         )
     else:
-        subprocess.run(
+        completed_process = subprocess.run(
             [
                 "python",
                 "runner.py",
@@ -80,16 +83,26 @@ def run(pcc: bool, intersections: int, seed: int, distance: int):
             ]
         )
 
-    process_data(pcc, seed, intersections, distance)
+    if completed_process.returncode != 0:
+        process_data(filename, pcc, -1, -1, -1)
+    else:
+        process_data(filename, pcc, seed, intersections, distance)
 
 
 def main():
     """
     Run the project multiple times with different parameters and calculate their outputs
     """
+    start = time.time()
+
     for i in range(0, 11):
-        run(True, 10, i, 1000)
-        run(False, 10, i, 1000)
+        for j in range(1, 21):
+            for k in range(1, 11):
+                run("cv2x", pcc=True, intersections=j, seed=i, distance=100 * k)
+                run("cv2x", pcc=False, intersections=j, seed=i, distance=100 * k)
+
+    end = time.time()
+    print(f"Total time: {end - start}")
 
 
 if __name__ == "__main__":

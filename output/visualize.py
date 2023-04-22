@@ -5,6 +5,8 @@ from matplotlib import pyplot as plt
 
 from output.parse_xml import get_vehicle_attrib
 
+NO_GRAPH = True
+
 
 def visualize(attrib: str):
     """visualize the attribute"""
@@ -24,6 +26,10 @@ def visualize(attrib: str):
         )
     else:
         total = sum(values)
+
+    if NO_GRAPH:
+        return total
+
     car = ""
     for id, values in val.items():
         plt.plot(time, values, label=id)
