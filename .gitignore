@@ -170,3 +170,4 @@ data/
 *.png
 output/*.txt
 output/*.csv
+*.csv

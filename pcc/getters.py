@@ -17,7 +17,8 @@ def _get_vehicle_state(vehicle: str, tls: dict):
 
     state["upcoming_tls"] = []
     for id, tl in tls.items():
-        if state["position"][0] < tl[0]:
+        if state["position"][0] < tl[0] and tl[0] - state["position"][0] < 300:
+            # DSRC
             state["upcoming_tls"].append({id: tl[0] - state["position"][0]})
 
     state["speed"] = traci.vehicle.getSpeed(vehicle)
