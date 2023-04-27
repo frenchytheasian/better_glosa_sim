@@ -172,19 +172,61 @@ def graph_attrib_vs_distance(
     normal = normal_df[f"{attrib}"]
     cv2x = cv2x_df[f"{attrib}"]
     dsrc = dsrc_df[f"{attrib}"]
-    normal.to_csv(f"normal_{attrib}.csv")
     distance = normal_df["distance"]
 
-    ax.scatter(distance, normal, label="Normal")
-    ax.scatter(distance, cv2x, label="CV2X")
-    ax.scatter(distance, dsrc, label="DSRC")
+    ax.plot(distance, normal, label="Normal")
+    ax.plot(distance, cv2x, label="CV2X")
+    ax.plot(distance, dsrc, label="DSRC")
 
     ax.set_xlabel("Distance (m)")
     ax.set_ylabel(attrib)
     ax.set_title(f"{attrib} vs Distance")
     ax.legend()
 
-    plt.savefig(f"{attrib}_vs_distance.png")
+    plt.savefig(f"{attrib}_vs_distance_{intersections}.png")
+
+
+def graph_attrib_vs_intersections(
+    normal_df: pd.DataFrame,
+    cv2x_df: pd.DataFrame,
+    dsrc_df: pd.DataFrame,
+    attrib: str,
+    distance: int,
+) -> None:
+    """Graph the given attribute vs intersections
+
+    Args:
+        normal_df (pd.DataFrame): Normal dataframe
+        cv2x_df (pd.DataFrame): CV2X dataframe
+        dsrc_df (pd.DataFrame): DSRC dataframe
+        attrib (str): Attribute to graph
+        distance (int): Distance
+    """
+    fig, ax = plt.subplots(figsize=(12, 8))
+
+    normal_df = normal_df[normal_df["distance"] == distance]
+    cv2x_df = cv2x_df[cv2x_df["distance"] == distance]
+    dsrc_df = dsrc_df[dsrc_df["distance"] == distance]
+
+    normal_df = normal_df.sort_values(by=["intersections"])
+    cv2x_df = cv2x_df.sort_values(by=["intersections"])
+    dsrc_df = dsrc_df.sort_values(by=["intersections"])
+
+    normal = normal_df[f"{attrib}"]
+    cv2x = cv2x_df[f"{attrib}"]
+    dsrc = dsrc_df[f"{attrib}"]
+    intersections = normal_df["intersections"]
+
+    ax.plot(intersections, normal, label="Normal")
+    ax.plot(intersections, cv2x, label="CV2X")
+    ax.plot(intersections, dsrc, label="DSRC")
+
+    ax.set_xlabel("Intersections")
+    ax.set_ylabel(attrib)
+    ax.set_title(f"{attrib} vs Intersections")
+    ax.legend()
+
+    plt.savefig(f"{attrib}_vs_intersections_{distance}.png")
 
 
 def main():
@@ -213,15 +255,15 @@ def main():
     diffs = compare_all_totals(totals["normal"], totals["cv2x"], totals["dsrc"])
     bar_plot_diffs(diffs)
 
-    intersections = 20
+    distance = 100
 
     for attrib in ["CO2", "fuel", "time", "waiting"]:
-        graph_attrib_vs_distance(
+        graph_attrib_vs_intersections(
             get_averages_df(normal_df),
             get_averages_df(cv2x_df),
             get_averages_df(dsrc_df),
             attrib,
-            intersections,
+            distance,
         )
 
 
