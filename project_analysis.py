@@ -143,6 +143,50 @@ def bar_plot_diffs(diffs: dict) -> None:
     plt.savefig("waiting.png")
 
 
+def graph_attrib_vs_distance(
+    normal_df: pd.DataFrame,
+    cv2x_df: pd.DataFrame,
+    dsrc_df: pd.DataFrame,
+    attrib: str,
+    intersections: int,
+) -> None:
+    """Graph the given attribute vs distance
+
+    Args:
+        normal_df (pd.DataFrame): Normal dataframe
+        cv2x_df (pd.DataFrame): CV2X dataframe
+        dsrc_df (pd.DataFrame): DSRC dataframe
+        attrib (str): Attribute to graph
+        intersections (int): Number of intersections
+    """
+    fig, ax = plt.subplots(figsize=(12, 8))
+
+    normal_df = normal_df[normal_df["intersections"] == intersections]
+    cv2x_df = cv2x_df[cv2x_df["intersections"] == intersections]
+    dsrc_df = dsrc_df[dsrc_df["intersections"] == intersections]
+
+    normal_df = normal_df.sort_values(by=["distance"])
+    cv2x_df = cv2x_df.sort_values(by=["distance"])
+    dsrc_df = dsrc_df.sort_values(by=["distance"])
+
+    normal = normal_df[f"{attrib}"]
+    cv2x = cv2x_df[f"{attrib}"]
+    dsrc = dsrc_df[f"{attrib}"]
+    normal.to_csv(f"normal_{attrib}.csv")
+    distance = normal_df["distance"]
+
+    ax.scatter(distance, normal, label="Normal")
+    ax.scatter(distance, cv2x, label="CV2X")
+    ax.scatter(distance, dsrc, label="DSRC")
+
+    ax.set_xlabel("Distance (m)")
+    ax.set_ylabel(attrib)
+    ax.set_title(f"{attrib} vs Distance")
+    ax.legend()
+
+    plt.savefig(f"{attrib}_vs_distance.png")
+
+
 def main():
     normal_file = Path("cv2x_normal_data.csv")
     cv2x_file = Path("cv2x_pcc_data.csv")
@@ -153,21 +197,32 @@ def main():
     dsrc_df = pd.read_csv(dsrc_file)
 
     # Get the averages of the dataframes
-    normal_df = get_averages_df(normal_df)
-    cv2x_df = get_averages_df(cv2x_df)
-    dsrc_df = get_averages_df(dsrc_df)
+    normal_avg_df = get_averages_df(normal_df)
+    cv2x_avg_df = get_averages_df(cv2x_df)
+    dsrc_avg_df = get_averages_df(dsrc_df)
 
     # Change the column names to differ and merge the dataframes
-    normal_df.columns = [f"normal_{col}" for col in normal_df.columns]
-    cv2x_df.columns = [f"cv2x_{col}" for col in cv2x_df.columns]
-    dsrc_df.columns = [f"dsrc_{col}" for col in dsrc_df.columns]
+    normal_avg_df.columns = [f"normal_{col}" for col in normal_avg_df.columns]
+    cv2x_avg_df.columns = [f"cv2x_{col}" for col in cv2x_avg_df.columns]
+    dsrc_avg_df.columns = [f"dsrc_{col}" for col in dsrc_avg_df.columns]
 
-    merged_df = pd.concat([normal_df, cv2x_df], axis=1)
-    merged_df = pd.concat([merged_df, dsrc_df], axis=1)
+    merged_df = pd.concat([normal_avg_df, cv2x_avg_df], axis=1)
+    merged_df = pd.concat([merged_df, dsrc_avg_df], axis=1)
 
     totals = get_all_totals(merged_df)
     diffs = compare_all_totals(totals["normal"], totals["cv2x"], totals["dsrc"])
     bar_plot_diffs(diffs)
+
+    intersections = 20
+
+    for attrib in ["CO2", "fuel", "time", "waiting"]:
+        graph_attrib_vs_distance(
+            get_averages_df(normal_df),
+            get_averages_df(cv2x_df),
+            get_averages_df(dsrc_df),
+            attrib,
+            intersections,
+        )
 
 
 if __name__ == "__main__":
