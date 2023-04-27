@@ -68,6 +68,8 @@ def run(filename: str, pcc: bool, intersections: int, seed: int, distance: int):
                 str(seed),
                 "--intersections",
                 str(intersections),
+                "--distance_between",
+                str(distance),
             ]
         )
     else:
@@ -80,6 +82,8 @@ def run(filename: str, pcc: bool, intersections: int, seed: int, distance: int):
                 str(seed),
                 "--intersections",
                 str(intersections),
+                "--distance_between",
+                str(distance),
             ]
         )
 
