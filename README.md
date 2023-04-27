@@ -21,11 +21,20 @@ pip install -r requirements.txt
 python runner.py
 ```
 
+### Options
+
+[--intersections] int: Number of intersections to include in the simulation
+[--seed] int: Seed for the randomization
+[--distance_between] int: Distance between all of the stoplights
+[--filename] str: The name of the network files
+[--nogui] bool: Whether or not to run the simulation without the gui
+
 ## Viewing Output
+
 ```bash
 python graph.py
 ```
 
-
 ## For class
+
 The file "project.py" contains the code I wrote to run the program for my project
