@@ -266,7 +266,7 @@ def main():
             )
 
     for attrib in ["CO2", "fuel", "time", "waiting"]:
-        for intersection in [1, 10, 20]:
+        for intersection in [4, 10, 20]:
             graph_attrib_vs_intersections(
                 get_averages_df(normal_df),
                 get_averages_df(cv2x_df),

@@ -24,9 +24,13 @@ python runner.py
 ### Options
 
 [--intersections] int: Number of intersections to include in the simulation
+
 [--seed] int: Seed for the randomization
+
 [--distance_between] int: Distance between all of the stoplights
+
 [--filename] str: The name of the network files
+
 [--nogui] bool: Whether or not to run the simulation without the gui
 
 ## Viewing Output
