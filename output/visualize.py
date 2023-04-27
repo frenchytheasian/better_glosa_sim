@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 
 from output.parse_xml import get_vehicle_attrib
 
-NO_GRAPH = True
+NO_GRAPH = False
 
 
 def visualize(attrib: str):

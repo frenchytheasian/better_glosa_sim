@@ -114,7 +114,7 @@ def bar_plot_diffs(diffs: dict) -> None:
     fig, ax = plt.subplots(figsize=(12, 8))
 
     # attribs = ["CO2", "fuel", "time"]
-    attribs = ["waiting"]
+    attribs = ["waiting", "CO2", "fuel", "time"]
     cv2x_diffs = [diffs[attrib]["cv2x"] for attrib in attribs]
     dsrc_diffs = [diffs[attrib]["dsrc"] for attrib in attribs]
     dsrc_cv2x_diffs = [diffs[attrib]["dsrc_cv2x"] for attrib in attribs]
@@ -140,7 +140,7 @@ def bar_plot_diffs(diffs: dict) -> None:
     for i, v in enumerate(dsrc_cv2x_diffs):
         ax.text(i + width * 2, v, f"{v:.2f}", ha="center", va="bottom")
 
-    plt.savefig("waiting.png")
+    plt.savefig("all.png")
 
 
 def graph_attrib_vs_distance(
@@ -255,16 +255,25 @@ def main():
     diffs = compare_all_totals(totals["normal"], totals["cv2x"], totals["dsrc"])
     bar_plot_diffs(diffs)
 
-    distance = 100
+    for attrib in ["CO2", "fuel", "time", "waiting"]:
+        for distance in [100, 500, 1000]:
+            graph_attrib_vs_distance(
+                get_averages_df(normal_df),
+                get_averages_df(cv2x_df),
+                get_averages_df(dsrc_df),
+                attrib,
+                distance,
+            )
 
     for attrib in ["CO2", "fuel", "time", "waiting"]:
-        graph_attrib_vs_intersections(
-            get_averages_df(normal_df),
-            get_averages_df(cv2x_df),
-            get_averages_df(dsrc_df),
-            attrib,
-            distance,
-        )
+        for intersection in [1, 10, 20]:
+            graph_attrib_vs_intersections(
+                get_averages_df(normal_df),
+                get_averages_df(cv2x_df),
+                get_averages_df(dsrc_df),
+                attrib,
+                intersection,
+            )
 
 
 if __name__ == "__main__":
